@@ -1,95 +1,48 @@
 
-/**
- * Generated using theia-plugin-generator
- */
-
 import * as theia from '@theia/plugin';
-import { Task } from '@theia/plugin';
 
 export function start(context: theia.PluginContext) {
-    let currentTaskExecution: theia.TaskExecution;
+    const outputChannel = theia.window.createOutputChannel('Test Channel');
+    outputChannel.show();
 
-    theia.tasks.onDidStartTask(event => {
-        currentTaskExecution = event.execution;
-        console.log('+++++++++++++ !!! on STARTED ');
-        const tsk = event.execution.task;
-        console.log('+++ name ' + tsk.name);
-        console.log('+++ type ' + tsk.definition.type);
-
-        const shellExecution = tsk.execution as theia.ShellExecution;
-        console.log('+++ command ' + shellExecution.command);
-        console.log('+++ commandLine ' + shellExecution.commandLine);
-        console.log('+++ args ' + shellExecution.args![0] + ' /// ' + shellExecution.args![1]);
-        console.log('+++ cwd ' + shellExecution.options!.cwd);
-    });
-
-    // theia.tasks.onDidEndTask(event => {
-    //     currentTaskExecution = event.execution;
-    //     console.log('********************** !!! on END ');
-    //     const tsk = event.execution.task;
-    //     console.log('+++ name ' + tsk.name);
-    //     console.log('+++ type ' + tsk.definition.type);
-
-    //     const shellExecution = tsk.execution as theia.ShellExecution;
-    //     console.log('+++ command ' + shellExecution.command);
-    //     console.log('+++ commandLine ' + shellExecution.commandLine);
-    //     console.log('+++ args ' + shellExecution.args![0] + ' /// ' + shellExecution.args![1]);
-    //     console.log('+++ cwd ' + shellExecution.options!.cwd);
-    // });
-
-    theia.commands.registerCommand({
-        id: 'terminateTask',
-        label: 'Terminate task'
-    }, (...args: any[]) => {
-        currentTaskExecution.terminate();
-    });
-
-
-
-
-    theia.tasks.registerTaskProvider('shell', {
-        provideTasks: token => {
-            const tasks: Task[] = []
+    theia.tasks.registerTaskProvider('customType', {
+        provideTasks: () => {
+            const tasks: theia.Task[] = []
 
             const buildTask = {
-                name: 'yarn build',
+                name: 'build',
                 definition: {
-                    type: 'shell'
+                    type: 'customType'
                 },
                 execution: {
-                    commandLine: 'yarn run build',
+                    command: 'yarn',
+                    args: ['run', 'build'],
                     options: {
                         cwd: '/home/rnikitenko/projects/theia'
                     }
                 },
-            };
-
-            const watchTask = {
-                name: 'yarn watch',
-                definition: {
-                    type: 'shell'
-                },
             }
-
             tasks.push(buildTask);
-            tasks.push(watchTask);
+
+            outputChannel.appendLine('=== PLUGIN === provide task: ' + JSON.stringify(buildTask));
 
             return tasks;
         },
 
         resolveTask: task => {
-            if (task.name === 'yarn watch') {
+            outputChannel.appendLine('=== PLUGIN === resolve task: ' + JSON.stringify(task));
+            if (task.name === 'build') {
                 task.execution = {
-                    commandLine: 'yarn run watch',
+                    command: 'yarn',
+                    args: [],
                     options: {
-                        cwd: '/projects/task-provider-plugin'
+                        cwd: '/home/rnikitenko/projects/che-theia'
                     }
                 }
             }
             return task;
         }
     });
-
 }
 
 export function stop() {

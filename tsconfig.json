@@ -20,6 +20,6 @@
         "outDir": "lib"
     },
     "include": [
-        "src"
+        "src", "../che-theia-samples/samples/tasks-plugin/src/tasks-provider.ts", "../che-theia-samples/samples/tasks-plugin/src/task-provider.ts", "../che-theia-samples/samples/tasks-plugin/src/tasks-widget.ts", "../che-theia-samples/samples/tasks-plugin/resources/tasks.js", "../che-theia-samples/samples/webview-sample-plugin/src/webview-location-manager.ts", "../che-theia-samples/samples/webview-sample-plugin/src/main-area-problem-page.ts", "../che-theia-samples/samples/webview-sample-plugin/src/main-area-first-page.ts", "../che-theia-samples/samples/webview-sample-plugin/src/main-area-first-widget.ts", "../che-theia-samples/samples/tasks-plugin/src/task-executions-manager.ts"
     ]
 }

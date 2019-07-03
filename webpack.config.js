@@ -43,8 +43,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     externals: {
-        
-            "@theia/plugin": "theia.theia_task_provider"
-        
+            "@theia/plugin": "theia.theia_task_provider",
+            "@eclipse-che/plugin": "che.theia_task_provider"
 	}
 };
