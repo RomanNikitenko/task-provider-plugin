@@ -5,6 +5,14 @@ export function start(context: theia.PluginContext) {
     const outputChannel = theia.window.createOutputChannel('Test Channel');
     outputChannel.show();
 
+    const testCommand = {
+        id: 'execute-overriden-task',
+        label: "Execute overriden task"
+    };
+    context.subscriptions.push(theia.commands.registerCommand(testCommand, (...args: any[]) => {
+        theia.commands.executeCommand('task:run', 'customType', 'build', { command: 'yarn', args: ['run', 'watch'] });
+    }));
+
     theia.tasks.registerTaskProvider('customType', {
         provideTasks: () => {
             const tasks: theia.Task[] = []
@@ -14,6 +22,7 @@ export function start(context: theia.PluginContext) {
                 definition: {
                     type: 'customType'
                 },
+                source: 'customType',
                 execution: {
                     command: 'yarn',
                     args: ['run', 'build'],
@@ -30,16 +39,6 @@ export function start(context: theia.PluginContext) {
         },
 
         resolveTask: task => {
-            outputChannel.appendLine('=== PLUGIN === resolve task: ' + JSON.stringify(task));
-            if (task.name === 'build') {
-                task.execution = {
-                    command: 'yarn',
-                    args: [],
-                    options: {
-                        cwd: '/home/rnikitenko/projects/che-theia'
-                    }
-                }
-            }
             return task;
         }
     });
