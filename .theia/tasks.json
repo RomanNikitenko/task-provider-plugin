@@ -1,0 +1,25 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "che",
+            "label": "theia:build",
+            "command": "yarn\n",
+            "target": {
+                "workingDir": "/projects/theia",
+                "containerName": "theia-ided0r"
+            }
+        },
+        {
+            "type": "che",
+            "label": "che-theia:build",
+            "command": "yarn\n",
+            "target": {
+                "workingDir": "/projects/che-theia",
+                "containerName": "che-dev"
+            }
+        },
+    ]
+}
